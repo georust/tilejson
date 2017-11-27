@@ -98,18 +98,18 @@ impl TileJSONBuilder {
     self
   }
 
-  pub fn tiles(&mut self, tiles: Vec<String>) -> &mut TileJSONBuilder {
-    self.tiles = tiles;
+  pub fn tiles(&mut self, tiles: Vec<&str>) -> &mut TileJSONBuilder {
+    self.tiles = tiles.into_iter().map(|url| url.to_owned()).collect();
     self
   }
 
-  pub fn grids(&mut self, grids: Vec<String>) -> &mut TileJSONBuilder {
-    self.grids = Some(grids);
+  pub fn grids(&mut self, grids: Vec<&str>) -> &mut TileJSONBuilder {
+    self.grids = Some(grids.into_iter().map(|url| url.to_owned()).collect());
     self
   }
 
-  pub fn data(&mut self, data: Vec<String>) -> &mut TileJSONBuilder {
-    self.data = Some(data);
+  pub fn data(&mut self, data: Vec<&str>) -> &mut TileJSONBuilder {
+    self.data = Some(data.into_iter().map(|url| url.to_owned()).collect());
     self
   }
 
