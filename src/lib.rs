@@ -5,21 +5,21 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct TileJSON {
-  tilejson: &'static str,
-  name: Option<String>,
-  description: Option<String>,
-  version: Option<String>,
-  attribution: Option<String>,
-  template: Option<String>,
-  legend: Option<String>,
-  scheme: Option<String>,
-  tiles: Vec<String>,
-  grids: Option<Vec<String>>,
-  data: Option<Vec<String>>,
-  minzoom: Option<u8>,
-  maxzoom: Option<u8>,
-  bounds: Option<Vec<i32>>,
-  center: Option<Vec<i32>>,
+  pub tilejson: &'static str,
+  pub name: Option<String>,
+  pub description: Option<String>,
+  pub version: Option<String>,
+  pub attribution: Option<String>,
+  pub template: Option<String>,
+  pub legend: Option<String>,
+  pub scheme: Option<String>,
+  pub tiles: Vec<String>,
+  pub grids: Option<Vec<String>>,
+  pub data: Option<Vec<String>>,
+  pub minzoom: Option<u8>,
+  pub maxzoom: Option<u8>,
+  pub bounds: Option<Vec<i32>>,
+  pub center: Option<Vec<i32>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
