@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct TileJSON {
   pub tilejson: &'static str,
+  pub id: Option<String>,
   pub name: Option<String>,
   pub description: Option<String>,
   pub version: Option<String>,
@@ -25,6 +26,7 @@ pub struct TileJSON {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TileJSONBuilder {
   tilejson: &'static str,
+  id: Option<String>,
   name: Option<String>,
   description: Option<String>,
   version: Option<String>,
@@ -45,6 +47,7 @@ impl TileJSONBuilder {
   pub fn new() -> TileJSONBuilder {
     TileJSONBuilder {
       tilejson: "2.2.0",
+      id: None,
       name: None,
       description: None,
       version: Some("1.0.0".to_owned()),
@@ -60,6 +63,11 @@ impl TileJSONBuilder {
       bounds: Some(vec![-180, -90, 180, 90]),
       center: None,
     }
+  }
+
+  pub fn id(&mut self, id: &str) -> &mut TileJSONBuilder {
+    self.id = Some(id.to_string());
+    self
   }
 
   pub fn name(&mut self, name: &str) -> &mut TileJSONBuilder {
@@ -135,6 +143,7 @@ impl TileJSONBuilder {
   pub fn finalize(self) -> TileJSON {
     TileJSON {
       tilejson: self.tilejson,
+      id: self.id,
       name: self.name,
       description: self.description,
       version: self.version,
@@ -174,6 +183,7 @@ mod tests {
       tilejson,
       TileJSON {
         tilejson: "2.2.0",
+        id: None,
         name: Some(String::from("compositing")),
         description: None,
         version: None,
@@ -209,7 +219,7 @@ mod tests {
 
     assert_eq!(
       serialized_tilejson,
-      r#"{"tilejson":"2.2.0","name":"compositing","description":null,"version":"1.0.0","attribution":null,"template":null,"legend":null,"scheme":"tms","tiles":["http://localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"],"grids":null,"data":null,"minzoom":0,"maxzoom":30,"bounds":[-180,-90,180,90],"center":null}"#
+      r#"{"tilejson":"2.2.0","id":null,"name":"compositing","description":null,"version":"1.0.0","attribution":null,"template":null,"legend":null,"scheme":"tms","tiles":["http://localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"],"grids":null,"data":null,"minzoom":0,"maxzoom":30,"bounds":[-180,-90,180,90],"center":null}"#
     )
   }
 }
