@@ -1,10 +1,9 @@
-#[macro_use]
-extern crate serde_derive;
-
 extern crate serde;
 extern crate serde_json;
 
-#[derive(Serialize, Deserialize, Debug)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct TileJSON {
   tilejson: &'static str,
   name: Option<String>,
@@ -20,7 +19,7 @@ pub struct TileJSON {
   minzoom: Option<u8>,
   maxzoom: Option<u8>,
   bounds: Option<Vec<i32>>,
-  center: Option<Vec<i32>>
+  center: Option<Vec<i32>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -39,7 +38,7 @@ pub struct TileJSONBuilder {
   minzoom: Option<u8>,
   maxzoom: Option<u8>,
   bounds: Option<Vec<i32>>,
-  center: Option<Vec<i32>>
+  center: Option<Vec<i32>>,
 }
 
 impl TileJSONBuilder {
@@ -59,7 +58,7 @@ impl TileJSONBuilder {
       minzoom: Some(0),
       maxzoom: Some(30),
       bounds: Some(vec![-180, -90, 180, 90]),
-      center: None
+      center: None,
     }
   }
 
@@ -156,8 +155,61 @@ impl TileJSONBuilder {
 
 #[cfg(test)]
 mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
+  use super::*;
+
+  #[test]
+  fn test_reading() {
+    let tilejson_str = r#"{
+        "tilejson": "2.2.0",
+        "name": "compositing",
+        "scheme": "tms",
+        "tiles": [
+            "http://localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"
+        ]
+    }"#;
+
+    let tilejson: TileJSON = serde_json::from_str(&tilejson_str).unwrap();
+
+    assert_eq!(
+      tilejson,
+      TileJSON {
+        tilejson: "2.2.0",
+        name: Some(String::from("compositing")),
+        description: None,
+        version: None,
+        attribution: None,
+        template: None,
+        legend: None,
+        scheme: Some(String::from("tms")),
+        tiles: vec![String::from(
+          "http://localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"
+        )],
+        grids: None,
+        data: None,
+        minzoom: None,
+        maxzoom: None,
+        bounds: None,
+        center: None,
+      }
+    )
+  }
+
+  #[test]
+  fn test_writing() {
+    let mut tilejson_builder = TileJSONBuilder::new();
+
+    tilejson_builder.name("compositing");
+    tilejson_builder.scheme("tms");
+
+    let tiles = vec!["http://localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"];
+    tilejson_builder.tiles(tiles);
+
+    let tilejson = tilejson_builder.finalize();
+    let serialized_tilejson = serde_json::to_string(&tilejson).unwrap();
+
+    assert_eq!(
+      serialized_tilejson,
+      r#"{"tilejson":"2.2.0","name":"compositing","description":null,"version":"1.0.0","attribution":null,"template":null,"legend":null,"scheme":"tms","tiles":["http://localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"],"grids":null,"data":null,"minzoom":0,"maxzoom":30,"bounds":[-180,-90,180,90],"center":null}"#
+    )
+  }
 }
