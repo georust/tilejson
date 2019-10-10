@@ -60,7 +60,7 @@ fn main() {
 
 ## Contributing
 
-Contributions are welcome! Have a look at the [issues](https://github.com/georust/geo/issues), and open a pull request if you'd like to add an algorithm or some functionality.
+Contributions are welcome! Have a look at the [issues](https://github.com/georust/tilejson/issues), and open a pull request if you'd like to add an algorithm or some functionality.
 
 ## License
 
