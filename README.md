@@ -1,6 +1,6 @@
 # rust-tilejson
 
-[![Build Status](https://travis-ci.org/stepankuzmin/rust-tilejson.svg)](https://travis-ci.org/stepankuzmin/rust-tilejson)
+[![Build Status](https://travis-ci.org/georust/tilejson.svg)](https://travis-ci.org/georust/tilejson)
 [![tilejson on Crates.io](https://meritbadge.herokuapp.com/tilejson)](https://crates.io/crates/tilejson)
 
 [Documentation](https://docs.rs/tilejson/)
