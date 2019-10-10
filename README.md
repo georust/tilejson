@@ -5,7 +5,7 @@
 
 [Documentation](https://docs.rs/tilejson/)
 
-Library for serializing the [TileJSON](https://github.com/mapbox/tilejson-spec) file format
+`tilejson` is a crate for serializing/deserializing the [TileJSON](https://github.com/mapbox/tilejson-spec) format — an open standard for representing map metadata.
 
 ## Examples
 
