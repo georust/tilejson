@@ -90,7 +90,7 @@ pub struct TileJSON {
   /// covered by all zoom levels. The bounds are represented in WGS:84
   /// latitude and longitude values, in the order left, bottom, right, top.
   /// Values may be integers or floating point numbers.
-  pub bounds: Option<Vec<i32>>,
+  pub bounds: Option<Vec<f32>>,
 
   /// The first value is the longitude, the second is latitude (both in
   /// WGS:84 values), the third value is the zoom level as an integer.
@@ -118,7 +118,7 @@ pub struct TileJSONBuilder {
   data: Option<Vec<String>>,
   minzoom: Option<u8>,
   maxzoom: Option<u8>,
-  bounds: Option<Vec<i32>>,
+  bounds: Option<Vec<f32>>,
   center: Option<Vec<i32>>,
 }
 
@@ -139,7 +139,7 @@ impl TileJSONBuilder {
       data: None,
       minzoom: Some(0),
       maxzoom: Some(30),
-      bounds: Some(vec![-180, -90, 180, 90]),
+      bounds: Some(vec![-180.0, -90.0, 180.0, 90.0]),
       center: None,
     }
   }
@@ -209,7 +209,7 @@ impl TileJSONBuilder {
     self
   }
 
-  pub fn bounds(&mut self, bounds: Vec<i32>) -> &mut TileJSONBuilder {
+  pub fn bounds(&mut self, bounds: Vec<f32>) -> &mut TileJSONBuilder {
     self.bounds = Some(bounds);
     self
   }
