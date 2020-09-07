@@ -298,7 +298,7 @@ mod tests {
 
     assert_eq!(
       serialized_tilejson,
-      r#"{"tilejson":"2.2.0","id":null,"name":"compositing","description":null,"version":"1.0.0","attribution":null,"template":null,"legend":null,"scheme":"tms","tiles":["http://localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"],"grids":null,"data":null,"minzoom":0,"maxzoom":30,"bounds":[-180,-90,180,90],"center":null}"#
+      r#"{"tilejson":"2.2.0","id":null,"name":"compositing","description":null,"version":"1.0.0","attribution":null,"template":null,"legend":null,"scheme":"tms","tiles":["http://localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"],"grids":null,"data":null,"minzoom":0,"maxzoom":30,"bounds":[-180.0,-90.0,180.0,90.0],"center":null}"#
     )
   }
 }
