@@ -4,4 +4,4 @@
 //! an open standard for representing map metadata.
 
 pub mod tilejson;
-pub use tilejson::*;
+pub use crate::tilejson::*;
