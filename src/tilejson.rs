@@ -130,7 +130,7 @@ impl TileJSONBuilder {
       name: None,
       description: None,
       version: Some("1.0.0".to_owned()),
-      attribution: None,
+      attribution: "",
       template: None,
       legend: None,
       scheme: Some("xyz".to_owned()),
