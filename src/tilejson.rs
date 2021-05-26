@@ -249,6 +249,7 @@ mod tests {
   fn test_reading() {
     let tilejson_str = r#"{
         "tilejson": "2.2.0",
+        "attribution": "",
         "name": "compositing",
         "scheme": "tms",
         "tiles": [
