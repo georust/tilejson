@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 pub struct TileJSON {
   /// A semver.org style version number. Describes the version of
   /// the TileJSON spec that is implemented by this JSON object.
-  pub tilejson: &'static str,
+  pub tilejson: String,
 
   /// The tileset id.
   #[serde(skip_serializing_if = "Option::is_none")]
@@ -235,7 +235,7 @@ impl TileJSONBuilder {
 
   pub fn finalize(self) -> TileJSON {
     TileJSON {
-      tilejson: self.tilejson,
+      tilejson: self.tilejson.to_string(),
       id: self.id,
       name: self.name,
       description: self.description,
@@ -276,7 +276,7 @@ mod tests {
     assert_eq!(
       tilejson,
       TileJSON {
-        tilejson: "2.2.0",
+        tilejson: "2.2.0".to_string(),
         id: None,
         name: Some(String::from("compositing")),
         description: None,
