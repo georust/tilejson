@@ -1,3 +1,13 @@
+<a name="v0.2.4"></a>
+### v0.2.4 (2021-10-11)
+
+
+#### Bug Fixes
+
+*   use String instead of &'static str for `tilejson` field (#7) ([25b325c9](https://github.com/georust/tilejson/commit/25b325c9f0618f1cad16899385f87339ac366e20))
+
+
+
 <a name="v0.2.3"></a>
 ### v0.2.3 (2021-10-10)
 
