@@ -2,8 +2,7 @@
 
 [![Build Status](https://github.com/georust/tilejson/workflows/Run%20tests/badge.svg)](https://github.com/georust/tilejson/actions)
 [![tilejson on crates.io](https://img.shields.io/crates/v/tilejson.svg)](https://crates.io/crates/tilejson)
-
-[Documentation](https://docs.rs/tilejson/)
+[![API Docs](https://docs.rs/tilejson/badge.svg)](https://docs.rs/tilejson)
 
 `tilejson` is a crate for serializing/deserializing the [TileJSON](https://github.com/mapbox/tilejson-spec) format — an open standard for representing map metadata.
 
