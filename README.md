@@ -1,9 +1,8 @@
 # tilejson
 
-[![Build Status](https://travis-ci.org/georust/tilejson.svg)](https://travis-ci.org/georust/tilejson)
-[![tilejson on Crates.io](https://meritbadge.herokuapp.com/tilejson)](https://crates.io/crates/tilejson)
-
-[Documentation](https://docs.rs/tilejson/)
+[![Build Status](https://github.com/georust/tilejson/workflows/Run%20tests/badge.svg)](https://github.com/georust/tilejson/actions)
+[![tilejson on crates.io](https://img.shields.io/crates/v/tilejson.svg)](https://crates.io/crates/tilejson)
+[![API Docs](https://docs.rs/tilejson/badge.svg)](https://docs.rs/tilejson)
 
 `tilejson` is a crate for serializing/deserializing the [TileJSON](https://github.com/mapbox/tilejson-spec) format — an open standard for representing map metadata.
 
@@ -66,8 +65,8 @@ Contributions are welcome! Have a look at the [issues](https://github.com/georus
 
 Licensed under either of
 
-- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
-- MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
+- MIT license ([LICENSE-MIT](LICENSE-MIT) or https://opensource.org/licenses/MIT)
 
 at your option.
 

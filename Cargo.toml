@@ -4,15 +4,12 @@ version = "0.2.5-alpha.0"
 description = "Library for serializing the TileJSON file format"
 authors = ["Stepan Kuzmin <to.stepan.kuzmin@gmail.com>"]
 edition = "2018"
-license = "MIT/Apache-2.0"
+license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/tilejson"
 homepage = "https://github.com/georust/tilejson"
 repository = "https://github.com/georust/tilejson"
 readme = "README.md"
 keywords = ["mapbox", "tilejson", "serde"]
-
-[badges]
-travis-ci = { repository = "georust/tilejson" }
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
