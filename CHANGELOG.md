@@ -3,6 +3,8 @@
 * for consistency, add `TileJSONBuilder::default()` - same as `::new()`
 * Migrate to Rust 2021 edition
 * Remove `serde_json` dependency
+* update docs to match v3.0.0 spec
+* add `fillzoom` field per 3.0.0. spec
 
 <a name="v0.2.4"></a>
 ### v0.2.4 (2021-10-11)
