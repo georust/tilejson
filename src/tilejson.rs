@@ -1,4 +1,61 @@
 use serde::{Deserialize, Serialize};
+use serde_tuple::{Deserialize_tuple, Serialize_tuple};
+
+#[derive(Serialize_tuple, Deserialize_tuple, PartialEq, Debug, Default)]
+pub struct Center {
+    pub longitude: f64,
+    pub latitude: f64,
+    pub zoom: u8,
+}
+
+impl Center {
+    pub fn new(longitude: f64, latitude: f64, zoom: u8) -> Self {
+        Self {
+            longitude,
+            latitude,
+            zoom,
+        }
+    }
+}
+
+#[derive(Serialize_tuple, Deserialize_tuple, PartialEq, Debug)]
+pub struct Bounds {
+    pub left: f64,
+    pub bottom: f64,
+    pub right: f64,
+    pub top: f64,
+}
+
+impl Bounds {
+    pub fn new(left: f64, bottom: f64, right: f64, top: f64) -> Self {
+        Self {
+            left,
+            bottom,
+            right,
+            top,
+        }
+    }
+}
+
+impl Default for Bounds {
+    /// Default bounds are set to `[-180, -85.05112877980659, 180, 85.0511287798066]`
+    /// See https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#35-bounds
+    fn default() -> Self {
+        Self::new(-180.0, -85.05112877980659, 180.0, 85.0511287798066)
+    }
+}
+
+impl From<Vec<f64>> for Bounds {
+    fn from(item: Vec<f64>) -> Self {
+        assert_eq!(item.len(), 4, "bounds must be an array with 4 values");
+        Self {
+            left: item[0],
+            bottom: item[1],
+            right: item[2],
+            top: item[3],
+        }
+    }
+}
 
 /// TileJSON struct represents tilejson-spec metadata as specified by
 /// https://github.com/mapbox/tilejson-spec (version 3.0.0)
@@ -173,7 +230,7 @@ pub struct TileJSON {
     ///
     /// See https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#35-bounds
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub bounds: Option<Vec<f32>>,
+    pub bounds: Option<Bounds>,
 
     /// The first value is the longitude, the second is latitude (both in WGS:84 values),
     ///
@@ -185,7 +242,7 @@ pub struct TileJSON {
     /// Example: `"center": [ -76.275329586789, 39.153492567373, 8 ]`
     /// See https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#36-center
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub center: Option<Vec<i32>>,
+    pub center: Option<Center>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -205,8 +262,8 @@ pub struct TileJSONBuilder {
     data: Option<Vec<String>>,
     minzoom: Option<u8>,
     maxzoom: Option<u8>,
-    bounds: Option<Vec<f32>>,
-    center: Option<Vec<i32>>,
+    bounds: Option<Bounds>,
+    center: Option<Center>,
 }
 
 impl Default for TileJSONBuilder {
@@ -236,7 +293,7 @@ impl TileJSONBuilder {
             data: None,
             minzoom: Some(0),
             maxzoom: Some(30),
-            bounds: Some(vec![-180.0, -90.0, 180.0, 90.0]),
+            bounds: Some(Bounds::new(-180.0, -90.0, 180.0, 90.0)),
             center: None,
         }
     }
@@ -311,12 +368,12 @@ impl TileJSONBuilder {
         self
     }
 
-    pub fn bounds(&mut self, bounds: Vec<f32>) -> &mut Self {
+    pub fn bounds(&mut self, bounds: Bounds) -> &mut Self {
         self.bounds = Some(bounds);
         self
     }
 
-    pub fn center(&mut self, center: Vec<i32>) -> &mut Self {
+    pub fn center(&mut self, center: Center) -> &mut Self {
         self.center = Some(center);
         self
     }
@@ -391,20 +448,37 @@ mod tests {
 
     #[test]
     fn test_writing() {
-        let mut tilejson_builder = TileJSONBuilder::new();
+        let mut tjb = TileJSONBuilder::new();
 
-        tilejson_builder.name("compositing");
-        tilejson_builder.scheme("tms");
+        tjb.name("compositing");
+        tjb.scheme("tms");
 
         let tiles = vec!["http://localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"];
-        tilejson_builder.tiles(tiles);
+        tjb.tiles(tiles);
 
-        let tilejson = tilejson_builder.finalize();
+        tjb.bounds(Bounds::new(-1.0, -2.0, 3.0, 4.0));
+        tjb.center(Center::new(-5.0, -6.0, 3));
+
+        let tilejson = tjb.finalize();
         let serialized_tilejson = serde_json::to_string(&tilejson).unwrap();
 
         assert_eq!(
             serialized_tilejson,
-            r#"{"tilejson":"3.0.0","name":"compositing","version":"1.0.0","scheme":"tms","tiles":["http://localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"],"minzoom":0,"maxzoom":30,"bounds":[-180.0,-90.0,180.0,90.0]}"#
+            r#"{"tilejson":"3.0.0","name":"compositing","version":"1.0.0","scheme":"tms","tiles":["http://localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"],"minzoom":0,"maxzoom":30,"bounds":[-1.0,-2.0,3.0,4.0],"center":[-5.0,-6.0,3]}"#
         )
+    }
+
+    fn parse(json_str: &str) -> serde_json::Result<TileJSON> {
+        serde_json::from_str(json_str)
+    }
+
+    #[test]
+    fn test_bad_json() {
+        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "center":[]}"#).unwrap_err();
+        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "center":[1,2]}"#).unwrap_err();
+        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "center":[1,2,3,4]}"#).unwrap_err();
+        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "bounds":[]}"#).unwrap_err();
+        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "bounds":[1,2,3]}"#).unwrap_err();
+        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "bounds":[1,2,3,4,5]}"#).unwrap_err();
     }
 }
