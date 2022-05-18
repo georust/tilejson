@@ -1,3 +1,9 @@
+### Unreleased
+
+* for consistency, add `TileJSONBuilder::default()` - same as `::new()`
+* Migrate to Rust 2021 edition
+* Remove `serde_json` dependency
+
 <a name="v0.2.4"></a>
 ### v0.2.4 (2021-10-11)
 
