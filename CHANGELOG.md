@@ -1,11 +1,16 @@
 ### Unreleased
 
-* for consistency, add `TileJSONBuilder::default()` - same as `::new()`
 * Migrate to Rust 2021 edition
-* Remove `serde_json` dependency
 * update docs to match v3.0.0 spec
 * add `fillzoom` field per v3.0.0 spec
 * add `Center` and `Bounds` structs instead of arrays
+* add `VectorLayer` struct and the `vector_layer` field
+* Remove builder pattern because `TileJSON` is writable 
+* Add `other` fields for any unknown fields in root and vector layers
+* Restructure instantiation:
+  * use `new(source)` or `new_ext(sources, version)` to create `TileJSON`
+  * use `set_missing_defaults()` to replace all missing values with their defaults (only if the spec defines it)
+* Remove `id` field because it is not supported by the spec
 
 <a name="v0.2.4"></a>
 ### v0.2.4 (2021-10-11)
