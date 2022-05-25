@@ -4,6 +4,7 @@
 * update docs to match v3.0.0 spec
 * add `fillzoom` field per v3.0.0 spec
 * add `Center` and `Bounds` structs instead of arrays
+  * both support `FromStr` trait
 * add `VectorLayer` struct and the `vector_layer` field
 * Remove builder pattern because `TileJSON` is writable 
 * Add `other` fields for any unknown fields in root and vector layers

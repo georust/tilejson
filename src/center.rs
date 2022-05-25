@@ -24,9 +24,9 @@ impl Center {
 pub enum ParseCenterError {
     /// Incorrect number of values
     BadLen,
-    // Wrapped error from the parse::<f64>()
+    /// Wrapped error from the parse::<f64>()
     ParseCoordError(ParseFloatError),
-    // Wrapped error from the parse::<u8>()
+    /// Wrapped error from the parse::<u8>()
     ParseZoomError(ParseIntError),
 }
 
@@ -47,6 +47,13 @@ impl FromStr for Center {
 
     /// Parse a string of four comma-separated values as a Center value,
     /// same order as the [Center::new] constructor. Extra spaces are ignored.
+    ///
+    /// # Example
+    /// ```
+    /// # use tilejson::Center;
+    /// # use std::str::FromStr;
+    /// let center = Center::from_str("1.0, 2.0, 3").unwrap();
+    /// assert_eq!(center, Center::new(1.0, 2.0, 3));
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut vals = s.split(',').map(|s| s.trim());
         let mut next_val = || vals.next().ok_or(ParseCenterError::BadLen);

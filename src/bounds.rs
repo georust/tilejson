@@ -34,7 +34,7 @@ impl Default for Bounds {
 pub enum ParseBoundsError {
     /// Incorrect number of values
     BadLen,
-    // Wrapped error from the parse::<f64>()
+    /// Wrapped error from the parse::<f64>()
     ParseCoordError(ParseFloatError),
 }
 
@@ -72,6 +72,14 @@ impl FromStr for Bounds {
 
     /// Parse a string of four comma-separated values as a Bounds value,
     /// same order as the [Bounds::new] constructor. Extra spaces are ignored.
+    ///
+    /// # Example
+    /// ```
+    /// # use tilejson::Bounds;
+    /// # use std::str::FromStr;
+    /// let bounds = Bounds::from_str("-1.0, -2.0, 3, 4").unwrap();
+    /// assert_eq!(bounds, Bounds::new(-1.0, -2.0, 3.0, 4.0));
+    /// ```
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut vals = s.split(',').map(|s| s.trim());
         let mut next_val = || {
