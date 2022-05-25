@@ -1,4 +1,5 @@
-### Unreleased
+<a name="v0.3.0"></a>
+### v0.3.0 (2022-05-25)
 
 * Migrate to Rust 2021 edition
 * update docs to match v3.0.0 spec
