@@ -243,25 +243,25 @@ impl TileJSON {
 /// assert_eq!(tj.tiles[0], "https://example.com/");
 ///
 /// // With the optional tilejson version (must be used in this order)
-/// let tj = tilejson! { "https://example.com/".to_string(), tilejson: "2.1.0".to_string() };
+/// let tj = tilejson! { tilejson: "2.1.0".to_string(), tiles: vec!["https://example.com/".to_string()], };
 /// assert_eq!(tj.tiles[0], "https://example.com/");
 /// assert_eq!(tj.tilejson, "2.1.0");
 ///
 /// // Other optional values could be used at the end
-/// let tj = tilejson! { "https://example.com/".to_string(), minzoom: 5 };
+/// let tj = tilejson! { tiles: vec!["https://example.com/".to_string()], minzoom: 5 };
 /// assert_eq!(tj.tiles[0], "https://example.com/");
 /// assert_eq!(tj.tilejson, "3.0.0");
 /// assert_eq!(tj.minzoom, Some(5));
 ///
 /// // version and optional values together
-/// let tj = tilejson! { "https://example.com/".to_string(), tilejson: "2.2.0".to_string(), minzoom: 5 };
+/// let tj = tilejson! { tilejson: "2.2.0".to_string(), tiles: vec!["https://example.com/".to_string()], minzoom: 5 };
 /// assert_eq!(tj.tiles[0], "https://example.com/");
 /// assert_eq!(tj.tilejson, "2.2.0");
 /// assert_eq!(tj.minzoom, Some(5));
 /// ```
 #[macro_export]
 macro_rules! tilejson {
-    ( tiles: $sources:expr, tilejson: $ver:expr $(, $tag:tt : $val:expr)* $(,)? ) => {
+    ( tilejson: $ver:expr, tiles: $sources:expr $(, $tag:tt : $val:expr)* $(,)? ) => {
         $crate::TileJSON {
             $( $tag: Some($val), )*
             ..$crate::TileJSON {
@@ -288,8 +288,8 @@ macro_rules! tilejson {
     };
     ( tiles: $sources:expr $(, $tag:tt : $val:expr)* $(,)? ) => {
         $crate::tilejson! {
-            tiles: $sources,
             tilejson: "3.0.0".to_string(),
+            tiles: $sources,
             $( $tag: $val , )* }
     };
     ( $tile_source:expr $(, $tag:tt : $val:expr)* $(,)? ) => {
@@ -320,8 +320,8 @@ mod tests {
         assert_eq!(
             tilejson,
             tilejson! {
-                tiles: vec!["http://localhost:8888/foo/{z}/{x}/{y}.png".to_string()],
                 tilejson: "3.0.0".to_string(),
+                tiles: vec!["http://localhost:8888/foo/{z}/{x}/{y}.png".to_string()],
                 attribution: "".to_string(),
                 name: "compositing".to_string(),
                 scheme: "tms".to_string(),
@@ -333,8 +333,8 @@ mod tests {
         assert_eq!(
             tilejson,
             tilejson! {
-                tiles: vec!["http://localhost:8888/foo/{z}/{x}/{y}.png".to_string()],
                 tilejson: "3.0.0".to_string(),
+                tiles: vec!["http://localhost:8888/foo/{z}/{x}/{y}.png".to_string()],
                 attribution: "".to_string(),
                 name: "compositing".to_string(),
                 scheme: "tms".to_string(),
