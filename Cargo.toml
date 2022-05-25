@@ -1,15 +1,18 @@
 [package]
 name = "tilejson"
-version = "0.2.5-alpha.0"
+version = "0.3.0"
 description = "Library for serializing the TileJSON file format"
-authors = ["Stepan Kuzmin <to.stepan.kuzmin@gmail.com>"]
+authors = [
+    "Stepan Kuzmin <to.stepan.kuzmin@gmail.com>",
+    "Yuri Astrakhan <YuriAstrakhan@gmail.com>",
+]
 edition = "2021"
 license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/tilejson"
 homepage = "https://github.com/georust/tilejson"
 repository = "https://github.com/georust/tilejson"
 readme = "README.md"
-keywords = ["mapbox", "tilejson", "serde"]
+keywords = ["maplibre", "mapbox", "tilejson", "serde"]
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
