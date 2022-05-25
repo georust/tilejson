@@ -1,7 +1,7 @@
 <a name="v0.3.0"></a>
 ### v0.3.0 (2022-05-25)
 
-**ATTENTION:** This release contains many breaking changes. See also the [README](README.md) for usage examples.
+**ATTENTION:** This release contains many breaking changes. See [README](README.md) for usage examples.
 
 * Migrate to Rust 2021 edition
 * update docs to match v3.0.0 spec
