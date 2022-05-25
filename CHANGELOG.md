@@ -4,11 +4,12 @@
 * update docs to match v3.0.0 spec
 * add `fillzoom` field per v3.0.0 spec
 * add `Center` and `Bounds` structs instead of arrays
+  * both support `FromStr` trait
 * add `VectorLayer` struct and the `vector_layer` field
 * Remove builder pattern because `TileJSON` is writable 
 * Add `other` fields for any unknown fields in root and vector layers
 * Restructure instantiation:
-  * use `new(source)` or `new_ext(sources, version)` to create `TileJSON`
+  * use `tilejson!{ source }` macro to create `TileJSON` objects, with any number of the optional `field: value` pairs. 
   * use `set_missing_defaults()` to replace all missing values with their defaults (only if the spec defines it)
 * Remove `id` field because it is not supported by the spec
 
