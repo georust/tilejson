@@ -1,6 +1,7 @@
 use serde_tuple::{Deserialize_tuple, Serialize_tuple};
 use std::fmt::{Display, Formatter};
 use std::num::ParseFloatError;
+use std::ops::{Add, AddAssign};
 use std::str::FromStr;
 
 #[derive(Serialize_tuple, Deserialize_tuple, PartialEq, Debug, Copy, Clone)]
@@ -12,6 +13,7 @@ pub struct Bounds {
 }
 
 impl Bounds {
+    /// Create a new Bounds object.
     pub fn new(left: f64, bottom: f64, right: f64, top: f64) -> Self {
         Self {
             left,
@@ -20,13 +22,118 @@ impl Bounds {
             top,
         }
     }
+
+    /// Create maximum bounds object in WGS84 space.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::MAX,
+    ///     Bounds::new(-180.0, -90.0, 180.0, 90.0)
+    /// );
+    /// ```
+    pub const MAX: Self = {
+        Self {
+            left: -180.0,
+            bottom: -90.0,
+            right: 180.0,
+            top: 90.0,
+        }
+    };
+
+    /// Create maximum bounds object usable with vector tiles.
+    /// See <https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#35-bounds>
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::MAX_TILED,
+    ///     Bounds::new(-180.0, -85.05112877980659, 180.0, 85.0511287798066)
+    /// );
+    /// ```
+    pub const MAX_TILED: Self = {
+        Self {
+            left: -180.0,
+            bottom: -85.05112877980659,
+            right: 180.0,
+            top: 85.0511287798066,
+        }
+    };
 }
 
 impl Default for Bounds {
     /// Default bounds are set to `[-180, -85.05112877980659, 180, 85.0511287798066]`
     /// See <https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#35-bounds>
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(Bounds::MAX_TILED, Bounds::default());
+    /// ```
     fn default() -> Self {
-        Self::new(-180.0, -85.05112877980659, 180.0, 85.0511287798066)
+        Self::MAX_TILED
+    }
+}
+
+impl Add for Bounds {
+    type Output = Bounds;
+
+    /// Combine two bounds, resulting in an bounding box that encloses both.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::new(1., 3., 7., 9.) + Bounds::new(2., 2., 8., 8.),
+    ///     Bounds::new(1., 2., 8., 9.)
+    /// )
+    /// ```
+    fn add(self, rhs: Self) -> Self::Output {
+        Self::Output::new(
+            if self.left < rhs.left {
+                self.left
+            } else {
+                rhs.left
+            },
+            if self.bottom < rhs.bottom {
+                self.bottom
+            } else {
+                rhs.bottom
+            },
+            if self.right > rhs.right {
+                self.right
+            } else {
+                rhs.right
+            },
+            if self.top > rhs.top {
+                self.top
+            } else {
+                rhs.top
+            },
+        )
+    }
+}
+
+impl AddAssign for Bounds {
+    /// Combine another bounds into this one, resulting in an bounding box that encloses both.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// let mut value = Bounds::new(1., 3., 7., 9.);
+    /// value += Bounds::new(2., 2., 8., 8.);
+    /// assert_eq!(value, Bounds::new(1., 2., 8., 9.))
+    /// ```
+    fn add_assign(&mut self, rhs: Self) {
+        if self.left > rhs.left {
+            self.left = rhs.left
+        }
+        if self.bottom > rhs.bottom {
+            self.bottom = rhs.bottom
+        }
+        if self.right < rhs.right {
+            self.right = rhs.right
+        }
+        if self.top < rhs.top {
+            self.top = rhs.top
+        }
     }
 }
 
