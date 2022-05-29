@@ -1,4 +1,8 @@
 ### Pending
+*
+
+<a name="v0.3.1"></a>
+### v0.3.1 (2022-05-29)
 * Add `Bounds::MAX` to create a maximum -180..180, -90..90 value.
 * Add `Bounds::MAX_TILED` to create a maximum allowed for vector tiles per spec.
 * Implement `Add` and `AddAssign` on `Bounds` 
