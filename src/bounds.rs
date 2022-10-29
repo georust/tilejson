@@ -1,3 +1,4 @@
+use crate::ParseBoundsError::{BadLen, ParseCoordError};
 use serde_tuple::{Deserialize_tuple, Serialize_tuple};
 use std::fmt::{Display, Formatter};
 use std::num::ParseFloatError;
@@ -148,10 +149,68 @@ pub enum ParseBoundsError {
 impl Display for ParseBoundsError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            ParseBoundsError::BadLen => {
-                f.write_str("Incorrect number of values. Bounds expects four f64 values.")
-            }
-            ParseBoundsError::ParseCoordError(e) => e.fmt(f),
+            BadLen => f.write_str("Incorrect number of values. Bounds expects four f64 values."),
+            ParseCoordError(e) => e.fmt(f),
+        }
+    }
+}
+
+impl From<[f64; 4]> for Bounds {
+    /// Parse four f64 values as a Bounds value, same order as the [Bounds::new] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::new(1., 2., 3., 4.),
+    ///     Bounds::from([1., 2., 3., 4.])
+    /// );
+    /// ```
+    fn from(value: [f64; 4]) -> Self {
+        Self {
+            left: value[0],
+            bottom: value[1],
+            right: value[2],
+            top: value[3],
+        }
+    }
+}
+
+impl From<[f32; 4]> for Bounds {
+    /// Parse four f32 values as a Bounds value, same order as the [Bounds::new] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::new(1., 2., 3., 4.),
+    ///     Bounds::from([1.0f32, 2.0f32, 3.0f32, 4.0f32])
+    /// );
+    /// ```
+    fn from(value: [f32; 4]) -> Self {
+        Self {
+            left: value[0] as f64,
+            bottom: value[1] as f64,
+            right: value[2] as f64,
+            top: value[3] as f64,
+        }
+    }
+}
+
+impl From<[i32; 4]> for Bounds {
+    /// Parse four i32 values as a Bounds value, same order as the [Bounds::new] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::new(1., 2., 3., 4.),
+    ///     Bounds::from([1, 2, 3, 4])
+    /// );
+    /// ```
+    fn from(value: [i32; 4]) -> Self {
+        Self {
+            left: value[0] as f64,
+            bottom: value[1] as f64,
+            right: value[2] as f64,
+            top: value[3] as f64,
         }
     }
 }
@@ -160,17 +219,71 @@ impl TryFrom<Vec<f64>> for Bounds {
     type Error = ParseBoundsError;
 
     /// Parse four f64 values as a Bounds value, same order as the [Bounds::new] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::new(1., 2., 3., 4.),
+    ///     Bounds::try_from(vec![1., 2., 3., 4.]).unwrap()
+    /// );
+    /// ```
     fn try_from(value: Vec<f64>) -> Result<Self, Self::Error> {
-        if value.len() == 4 {
-            Ok(Self {
-                left: value[0],
-                bottom: value[1],
-                right: value[2],
-                top: value[3],
-            })
-        } else {
-            Err(ParseBoundsError::BadLen)
-        }
+        let arr: [f64; 4] = value.try_into().map_err(|_| BadLen)?;
+        Ok(arr.into())
+    }
+}
+
+impl TryFrom<&[f64]> for Bounds {
+    type Error = ParseBoundsError;
+
+    /// Parse four f64 values as a Bounds value, same order as the [Bounds::new] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::new(1., 2., 3., 4.),
+    ///     Bounds::try_from(vec![1., 2., 3., 4.].as_slice()).unwrap()
+    /// );
+    /// ```
+    fn try_from(value: &[f64]) -> Result<Self, Self::Error> {
+        let arr: [f64; 4] = value.try_into().map_err(|_| BadLen)?;
+        Ok(arr.into())
+    }
+}
+
+impl TryFrom<&[f32]> for Bounds {
+    type Error = ParseBoundsError;
+
+    /// Parse four f32 values as a Bounds value, same order as the [Bounds::new] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::new(1., 2., 3., 4.),
+    ///     Bounds::try_from(vec![1.0f32, 2.0f32, 3.0f32, 4.0f32].as_slice()).unwrap()
+    /// );
+    /// ```
+    fn try_from(value: &[f32]) -> Result<Self, Self::Error> {
+        let arr: [f32; 4] = value.try_into().map_err(|_| BadLen)?;
+        Ok(arr.into())
+    }
+}
+
+impl TryFrom<&[i32]> for Bounds {
+    type Error = ParseBoundsError;
+
+    /// Parse four i32 values as a Bounds value, same order as the [Bounds::new] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::new(1., 2., 3., 4.),
+    ///     Bounds::try_from(vec![1, 2, 3, 4].as_slice()).unwrap()
+    /// );
+    /// ```
+    fn try_from(value: &[i32]) -> Result<Self, Self::Error> {
+        let arr: [i32; 4] = value.try_into().map_err(|_| BadLen)?;
+        Ok(arr.into())
     }
 }
 
@@ -188,28 +301,26 @@ impl FromStr for Bounds {
     /// assert_eq!(bounds, Bounds::new(-1.0, -2.0, 3.0, 4.0));
     /// ```
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut vals = s.split(',').map(|s| s.trim());
-        let mut next_val = || {
-            vals.next().map_or(Err(ParseBoundsError::BadLen), |v| {
-                v.parse().map_err(ParseBoundsError::ParseCoordError)
-            })
-        };
-        let bounds = Self {
-            left: next_val()?,
-            bottom: next_val()?,
-            right: next_val()?,
-            top: next_val()?,
-        };
-        match vals.next() {
-            Some(_) => Err(ParseBoundsError::BadLen),
-            None => Ok(bounds),
+        let mut values = s.split(',');
+        let mut result = [0.; 4];
+        for i in 0..4 {
+            result[i] = values
+                .next()
+                .ok_or(ParseBoundsError::BadLen)?
+                .trim()
+                .parse()
+                .map_err(ParseBoundsError::ParseCoordError)?;
         }
+        values
+            .next()
+            .map_or(Ok(result.into()), |_| Err(ParseBoundsError::BadLen))
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ParseBoundsError::BadLen;
 
     #[test]
     fn test_parse_err() {
@@ -231,5 +342,42 @@ mod tests {
         let val = |s| Bounds::from_str(s).unwrap();
         assert_eq!(val("0,0,0,0"), Bounds::new(0.0, 0.0, 0.0, 0.0));
         assert_eq!(val(" 1 ,2.0, 3.0,  4.0 "), Bounds::new(1.0, 2.0, 3.0, 4.0));
+    }
+
+    #[test]
+    fn test_parse_errors() {
+        let err = |s| Bounds::from_str(s).unwrap_err();
+        assert_eq!(err("0,0,0"), BadLen);
+        assert_eq!(err("0,0,0,0,0"), BadLen);
+        assert!(matches!(err(""), ParseCoordError(_)));
+        assert!(matches!(err("a"), ParseCoordError(_)));
+        assert!(matches!(err("0,0,0,1a"), ParseCoordError(_)));
+    }
+
+    #[test]
+    fn test_from() -> Result<(), ParseBoundsError> {
+        let exp = Bounds::new(1.0, 2.0, 3.0, 4.0);
+        assert_eq!(exp, Bounds::from([1.0, 2.0, 3.0, 4.0]));
+        assert_eq!(exp, Bounds::try_from([1.0, 2.0, 3.0, 4.0].as_slice())?);
+        assert_eq!(exp, Bounds::try_from(vec![1.0, 2.0, 3.0, 4.0])?);
+        let val = vec![1.0, 2.0, 3.0, 4.0];
+        assert_eq!(exp, Bounds::try_from((&val).as_slice())?);
+        assert_eq!(exp, Bounds::try_from(val.as_slice())?);
+
+        // f32
+        assert_eq!(exp, Bounds::from([1.0f32, 2.0f32, 3.0f32, 4.0f32]));
+        let val_array = [1.0f32, 2.0f32, 3.0f32, 4.0f32];
+        assert_eq!(exp, Bounds::try_from(val_array.as_slice())?);
+        let val = vec![1.0f32, 2.0f32, 3.0f32, 4.0f32];
+        assert_eq!(exp, Bounds::try_from((&val).as_slice())?);
+        assert_eq!(exp, Bounds::try_from(val.as_slice())?);
+
+        // i32
+        assert_eq!(exp, Bounds::from([1, 2, 3, 4]));
+        assert_eq!(exp, Bounds::try_from([1, 2, 3, 4].as_slice())?);
+        let val = vec![1, 2, 3, 4];
+        assert_eq!(exp, Bounds::try_from((&val).as_slice())?);
+        assert_eq!(exp, Bounds::try_from(val.as_slice())?);
+        Ok(())
     }
 }
