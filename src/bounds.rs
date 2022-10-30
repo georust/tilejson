@@ -138,7 +138,7 @@ impl AddAssign for Bounds {
     }
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum ParseBoundsError {
     /// Incorrect number of values
     BadLen,
@@ -303,8 +303,8 @@ impl FromStr for Bounds {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut values = s.split(',');
         let mut result = [0.; 4];
-        for i in 0..4 {
-            result[i] = values
+        for val in &mut result {
+            *val = values
                 .next()
                 .ok_or(ParseBoundsError::BadLen)?
                 .trim()
@@ -361,7 +361,7 @@ mod tests {
         assert_eq!(exp, Bounds::try_from([1.0, 2.0, 3.0, 4.0].as_slice())?);
         assert_eq!(exp, Bounds::try_from(vec![1.0, 2.0, 3.0, 4.0])?);
         let val = vec![1.0, 2.0, 3.0, 4.0];
-        assert_eq!(exp, Bounds::try_from((&val).as_slice())?);
+        assert_eq!(exp, Bounds::try_from(val.as_slice())?);
         assert_eq!(exp, Bounds::try_from(val.as_slice())?);
 
         // f32
@@ -369,14 +369,16 @@ mod tests {
         let val_array = [1.0f32, 2.0f32, 3.0f32, 4.0f32];
         assert_eq!(exp, Bounds::try_from(val_array.as_slice())?);
         let val = vec![1.0f32, 2.0f32, 3.0f32, 4.0f32];
-        assert_eq!(exp, Bounds::try_from((&val).as_slice())?);
+        let borrowed = &val;
+        assert_eq!(exp, Bounds::try_from(borrowed.as_slice())?);
         assert_eq!(exp, Bounds::try_from(val.as_slice())?);
 
         // i32
         assert_eq!(exp, Bounds::from([1, 2, 3, 4]));
         assert_eq!(exp, Bounds::try_from([1, 2, 3, 4].as_slice())?);
         let val = vec![1, 2, 3, 4];
-        assert_eq!(exp, Bounds::try_from((&val).as_slice())?);
+        let borrowed = &val;
+        assert_eq!(exp, Bounds::try_from(borrowed.as_slice())?);
         assert_eq!(exp, Bounds::try_from(val.as_slice())?);
         Ok(())
     }

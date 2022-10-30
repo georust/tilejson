@@ -51,7 +51,7 @@ use std::collections::HashMap;
 /// ```
 ///
 /// See <https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#33-vector_layers>
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct VectorLayer {
     /// A string value representing the the layer id.
     ///
