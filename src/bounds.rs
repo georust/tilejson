@@ -361,8 +361,7 @@ mod tests {
         assert_eq!(exp, Bounds::try_from([1.0, 2.0, 3.0, 4.0].as_slice())?);
         assert_eq!(exp, Bounds::try_from(vec![1.0, 2.0, 3.0, 4.0])?);
         let val = vec![1.0, 2.0, 3.0, 4.0];
-        let borrowed = &val;
-        assert_eq!(exp, Bounds::try_from(borrowed.as_slice())?);
+        assert_eq!(exp, Bounds::try_from(val.as_slice())?);
         assert_eq!(exp, Bounds::try_from(val.as_slice())?);
 
         // f32
