@@ -20,7 +20,7 @@ impl Center {
     }
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum ParseCenterError {
     /// Incorrect number of values
     BadLen,
