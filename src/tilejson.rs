@@ -315,7 +315,7 @@ mod tests {
         ]
     }"#;
 
-        let mut tilejson: TileJSON = serde_json::from_str(&tilejson_str).unwrap();
+        let mut tilejson: TileJSON = serde_json::from_str(tilejson_str).unwrap();
 
         assert_eq!(
             tilejson,
@@ -388,11 +388,11 @@ mod tests {
 
     #[test]
     fn test_bad_json() {
-        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "center":[]}"#).unwrap_err();
-        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "center":[1,2]}"#).unwrap_err();
-        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "center":[1,2,3,4]}"#).unwrap_err();
-        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "bounds":[]}"#).unwrap_err();
-        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "bounds":[1,2,3]}"#).unwrap_err();
-        parse(&r#"{"tilejson":"3.0.0", "tiles":["x"], "bounds":[1,2,3,4,5]}"#).unwrap_err();
+        parse(r#"{"tilejson":"3.0.0", "tiles":["x"], "center":[]}"#).unwrap_err();
+        parse(r#"{"tilejson":"3.0.0", "tiles":["x"], "center":[1,2]}"#).unwrap_err();
+        parse(r#"{"tilejson":"3.0.0", "tiles":["x"], "center":[1,2,3,4]}"#).unwrap_err();
+        parse(r#"{"tilejson":"3.0.0", "tiles":["x"], "bounds":[]}"#).unwrap_err();
+        parse(r#"{"tilejson":"3.0.0", "tiles":["x"], "bounds":[1,2,3]}"#).unwrap_err();
+        parse(r#"{"tilejson":"3.0.0", "tiles":["x"], "bounds":[1,2,3,4,5]}"#).unwrap_err();
     }
 }

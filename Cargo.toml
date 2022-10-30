@@ -1,6 +1,6 @@
 [package]
 name = "tilejson"
-version = "0.3.1"
+version = "0.3.2"
 description = "Library for serializing the TileJSON file format"
 authors = [
     "Stepan Kuzmin <to.stepan.kuzmin@gmail.com>",
