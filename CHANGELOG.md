@@ -1,5 +1,5 @@
 <a name="v0.3.2"></a>
-### Pending
+### v0.3.2 (2022-10-30)
 * Add `Bounds::from` for `[f64; 4]`, `[f32; 4]`, `[i32; 4]`
 * Add `Bounds::try_from` now also supports `&[f64]`, `&[f32]`, `&[i32]` in addition to `Vec<f64>`
 
