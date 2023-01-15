@@ -24,9 +24,9 @@ impl Center {
 pub enum ParseCenterError {
     /// Incorrect number of values
     BadLen,
-    /// Wrapped error from the parse::<f64>()
+    /// Wrapped error from the `parse::<f64>()`
     ParseCoordError(ParseFloatError),
-    /// Wrapped error from the parse::<u8>()
+    /// Wrapped error from the `parse::<u8>()`
     ParseZoomError(ParseIntError),
 }
 
