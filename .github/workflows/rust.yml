@@ -6,7 +6,6 @@ on:
       - trying
       - release/**
   pull_request:
-  schedule: [cron: "45 6 * * *"]
   workflow_dispatch:
 
 name: Run tests
