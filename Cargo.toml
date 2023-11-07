@@ -13,6 +13,7 @@ homepage = "https://github.com/georust/tilejson"
 repository = "https://github.com/georust/tilejson"
 readme = "README.md"
 keywords = ["maplibre", "mapbox", "tilejson", "serde"]
+categories = ["science::geo"]
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
