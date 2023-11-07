@@ -1,9 +1,11 @@
-use crate::ParseBoundsError::{BadLen, ParseCoordError};
-use serde_tuple::{Deserialize_tuple, Serialize_tuple};
-use std::fmt::{Display, Formatter};
+use std::fmt::{Display, Formatter, Write as _};
 use std::num::ParseFloatError;
 use std::ops::{Add, AddAssign};
 use std::str::FromStr;
+
+use serde_tuple::{Deserialize_tuple, Serialize_tuple};
+
+use crate::ParseBoundsError::{BadLen, ParseCoordError};
 
 #[derive(Serialize_tuple, Deserialize_tuple, PartialEq, Debug, Copy, Clone)]
 pub struct Bounds {
@@ -72,6 +74,29 @@ impl Default for Bounds {
     /// ```
     fn default() -> Self {
         Self::MAX_TILED
+    }
+}
+
+impl Display for Bounds {
+    /// Format Bounds struct as a comma-separated string.
+    /// Accepts all precision formatting parameters as for floats.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// # use std::str::FromStr;
+    /// let bounds = Bounds::new(-1.5, -2.5, 3.5, 4.5);
+    /// assert_eq!(bounds.to_string(), "-1.5,-2.5,3.5,4.5");
+    /// assert_eq!(format!("{:.2}", bounds), "-1.50,-2.50,3.50,4.50");
+    /// assert_eq!(Bounds::from_str(&bounds.to_string()).unwrap(), bounds);
+    /// ```
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        self.left.fmt(f)?;
+        f.write_char(',')?;
+        self.bottom.fmt(f)?;
+        f.write_char(',')?;
+        self.right.fmt(f)?;
+        f.write_char(',')?;
+        self.top.fmt(f)
     }
 }
 

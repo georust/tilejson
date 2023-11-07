@@ -1,7 +1,8 @@
-use serde_tuple::{Deserialize_tuple, Serialize_tuple};
-use std::fmt::{Display, Formatter};
+use std::fmt::{Display, Formatter, Write as _};
 use std::num::{ParseFloatError, ParseIntError};
 use std::str::FromStr;
+
+use serde_tuple::{Deserialize_tuple, Serialize_tuple};
 
 #[derive(Serialize_tuple, Deserialize_tuple, PartialEq, Debug, Default, Copy, Clone)]
 pub struct Center {
@@ -17,6 +18,27 @@ impl Center {
             latitude,
             zoom,
         }
+    }
+}
+
+impl Display for Center {
+    /// Format center struct as a comma-separated string.
+    /// Longitude and latitude are formatted with specified precision parameters.
+    ///
+    /// ```
+    /// # use tilejson::Center;
+    /// # use std::str::FromStr;
+    /// let center = Center::new(1.5, -2.5, 8);
+    /// assert_eq!(center.to_string(), "1.5,-2.5,8");
+    /// assert_eq!(format!("{:.2}", center), "1.50,-2.50,8");
+    /// assert_eq!(Center::from_str(&center.to_string()).unwrap(), center);
+    /// ```
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        self.longitude.fmt(f)?;
+        f.write_char(',')?;
+        self.latitude.fmt(f)?;
+        f.write_char(',')?;
+        write!(f, "{}", self.zoom)
     }
 }
 

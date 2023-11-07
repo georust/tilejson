@@ -1,9 +1,11 @@
+use std::collections::HashMap;
+
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
+
 use crate::bounds::Bounds;
 use crate::center::Center;
 use crate::vector_layer::VectorLayer;
-use serde::{Deserialize, Serialize};
-use serde_json::Value;
-use std::collections::HashMap;
 
 /// TileJSON struct represents tilejson-spec metadata as specified by
 /// <https://github.com/mapbox/tilejson-spec> (version 3.0.0)
