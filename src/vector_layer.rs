@@ -1,6 +1,7 @@
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::collections::HashMap;
 
 /// Each object describes one layer of vector tile data.
 ///

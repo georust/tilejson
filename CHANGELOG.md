@@ -1,3 +1,7 @@
+<a name="v0.3.3"></a>
+### v0.3.3 (2022-11-07)
+* Add `Display` with precision support for `Bounds` and `Center` structs
+
 <a name="v0.3.2"></a>
 ### v0.3.2 (2022-10-30)
 * Add `Bounds::from` for `[f64; 4]`, `[f32; 4]`, `[i32; 4]`
