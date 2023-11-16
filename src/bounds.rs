@@ -4,8 +4,9 @@ use std::ops::{Add, AddAssign};
 use std::str::FromStr;
 
 use serde_tuple::{Deserialize_tuple, Serialize_tuple};
+use thiserror::Error;
 
-use crate::ParseBoundsError::{BadLen, ParseCoordError};
+use crate::ParseBoundsError::BadLen;
 
 #[derive(Serialize_tuple, Deserialize_tuple, PartialEq, Debug, Copy, Clone)]
 pub struct Bounds {
@@ -163,21 +164,13 @@ impl AddAssign for Bounds {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Error, Debug, PartialEq, Eq, Clone)]
 pub enum ParseBoundsError {
-    /// Incorrect number of values
+    #[error("Incorrect number of values. Bounds expects four f64 values.")]
     BadLen,
     /// Wrapped error from the `parse::<f64>()`
-    ParseCoordError(ParseFloatError),
-}
-
-impl Display for ParseBoundsError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self {
-            BadLen => f.write_str("Incorrect number of values. Bounds expects four f64 values."),
-            ParseCoordError(e) => e.fmt(f),
-        }
-    }
+    #[error(transparent)]
+    ParseCoordError(#[from] ParseFloatError),
 }
 
 impl From<[f64; 4]> for Bounds {
@@ -333,8 +326,7 @@ impl FromStr for Bounds {
                 .next()
                 .ok_or(ParseBoundsError::BadLen)?
                 .trim()
-                .parse()
-                .map_err(ParseBoundsError::ParseCoordError)?;
+                .parse()?;
         }
         values
             .next()
@@ -345,7 +337,7 @@ impl FromStr for Bounds {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ParseBoundsError::BadLen;
+    use crate::ParseBoundsError::{BadLen, ParseCoordError};
 
     #[test]
     fn test_parse_err() {

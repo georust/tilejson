@@ -3,6 +3,7 @@ use std::num::{ParseFloatError, ParseIntError};
 use std::str::FromStr;
 
 use serde_tuple::{Deserialize_tuple, Serialize_tuple};
+use thiserror::Error;
 
 #[derive(Serialize_tuple, Deserialize_tuple, PartialEq, Debug, Default, Copy, Clone)]
 pub struct Center {
@@ -42,26 +43,16 @@ impl Display for Center {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Error, Debug, PartialEq, Eq, Clone)]
 pub enum ParseCenterError {
-    /// Incorrect number of values
+    #[error("Incorrect number of values. Center expects two f64 and one u8 values.")]
     BadLen,
     /// Wrapped error from the `parse::<f64>()`
-    ParseCoordError(ParseFloatError),
+    #[error(transparent)]
+    ParseCoordError(#[from] ParseFloatError),
     /// Wrapped error from the `parse::<u8>()`
-    ParseZoomError(ParseIntError),
-}
-
-impl Display for ParseCenterError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self {
-            ParseCenterError::BadLen => {
-                f.write_str("Incorrect number of values. Center expects two f64 and one u8 values.")
-            }
-            ParseCenterError::ParseCoordError(e) => e.fmt(f),
-            ParseCenterError::ParseZoomError(e) => e.fmt(f),
-        }
-    }
+    #[error(transparent)]
+    ParseZoomError(#[from] ParseIntError),
 }
 
 impl FromStr for Center {
@@ -80,15 +71,9 @@ impl FromStr for Center {
         let mut vals = s.split(',').map(|s| s.trim());
         let mut next_val = || vals.next().ok_or(ParseCenterError::BadLen);
         let center = Self {
-            longitude: next_val()?
-                .parse()
-                .map_err(ParseCenterError::ParseCoordError)?,
-            latitude: next_val()?
-                .parse()
-                .map_err(ParseCenterError::ParseCoordError)?,
-            zoom: next_val()?
-                .parse()
-                .map_err(ParseCenterError::ParseZoomError)?,
+            longitude: next_val()?.parse()?,
+            latitude: next_val()?.parse()?,
+            zoom: next_val()?.parse()?,
         };
         match vals.next() {
             Some(_) => Err(ParseCenterError::BadLen),

@@ -1,3 +1,7 @@
+<a name="v0.3.4"></a>
+### v0.3.4 (2022-11-15)
+* Add proper `Error` implementation to `Bounds` and `Center` parsing errors
+
 <a name="v0.3.3"></a>
 ### v0.3.3 (2022-11-07)
 * Add `Display` with precision support for `Bounds` and `Center` structs
