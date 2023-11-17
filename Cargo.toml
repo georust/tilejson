@@ -1,6 +1,6 @@
 [package]
 name = "tilejson"
-version = "0.3.3"
+version = "0.3.4"
 description = "Library for serializing the TileJSON file format"
 authors = [
     "Stepan Kuzmin <to.stepan.kuzmin@gmail.com>",
@@ -19,3 +19,4 @@ categories = ["science::geo"]
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 serde_tuple = "0.5"
+thiserror = "1"
