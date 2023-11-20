@@ -1,3 +1,7 @@
+<a name="v0.4.0"></a>
+### v0.4.0 (2022-11-19)
+* Switch all `HashMap` to `BTreeMap` for consistent serialization ordering
+
 <a name="v0.3.4"></a>
 ### v0.3.4 (2022-11-15)
 * Add proper `Error` implementation to `Bounds` and `Center` parsing errors

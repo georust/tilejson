@@ -31,7 +31,7 @@ impl Display for Center {
     /// # use std::str::FromStr;
     /// let center = Center::new(1.5, -2.5, 8);
     /// assert_eq!(center.to_string(), "1.5,-2.5,8");
-    /// assert_eq!(format!("{:.2}", center), "1.50,-2.50,8");
+    /// assert_eq!(format!("{center:.2}"), "1.50,-2.50,8");
     /// assert_eq!(Center::from_str(&center.to_string()).unwrap(), center);
     /// ```
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
