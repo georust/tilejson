@@ -87,7 +87,7 @@ impl Display for Bounds {
     /// # use std::str::FromStr;
     /// let bounds = Bounds::new(-1.5, -2.5, 3.5, 4.5);
     /// assert_eq!(bounds.to_string(), "-1.5,-2.5,3.5,4.5");
-    /// assert_eq!(format!("{:.2}", bounds), "-1.50,-2.50,3.50,4.50");
+    /// assert_eq!(format!("{bounds:.2}"), "-1.50,-2.50,3.50,4.50");
     /// assert_eq!(Bounds::from_str(&bounds.to_string()).unwrap(), bounds);
     /// ```
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -322,15 +322,9 @@ impl FromStr for Bounds {
         let mut values = s.split(',');
         let mut result = [0.; 4];
         for val in &mut result {
-            *val = values
-                .next()
-                .ok_or(ParseBoundsError::BadLen)?
-                .trim()
-                .parse()?;
+            *val = values.next().ok_or(BadLen)?.trim().parse()?;
         }
-        values
-            .next()
-            .map_or(Ok(result.into()), |_| Err(ParseBoundsError::BadLen))
+        values.next().map_or(Ok(result.into()), |_| Err(BadLen))
     }
 }
 

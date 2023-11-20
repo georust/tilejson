@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -66,7 +66,7 @@ pub struct VectorLayer {
     /// Each value (description) MUST be a string that describes the underlying data.
     /// If no fields are present, the fields key MUST be an empty object.
     /// <https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#332-fields>
-    pub fields: HashMap<String, String>,
+    pub fields: BTreeMap<String, String>,
 
     /// A string representing a human-readable description of the entire layer's contents.
     ///
@@ -90,11 +90,11 @@ pub struct VectorLayer {
 
     /// Any unrecognized fields will be stored here.
     #[serde(flatten)]
-    pub other: HashMap<String, Value>,
+    pub other: BTreeMap<String, Value>,
 }
 
 impl VectorLayer {
-    pub fn new(id: String, fields: HashMap<String, String>) -> Self {
+    pub fn new(id: String, fields: BTreeMap<String, String>) -> Self {
         Self {
             id,
             fields,

@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -204,7 +204,7 @@ pub struct TileJSON {
 
     /// Any unrecognized fields will be stored here
     #[serde(flatten)]
-    pub other: HashMap<String, Value>,
+    pub other: BTreeMap<String, Value>,
 }
 
 impl TileJSON {
@@ -354,6 +354,34 @@ mod tests {
     }
 
     #[test]
+    fn test_other() {
+        let tilejson_str = r#"{
+        "tilejson": "3.0.0",
+        "attribution": "",
+        "name": "compositing",
+        "scheme": "tms",
+        "tiles": [
+            "http://localhost:8888/foo/{z}/{x}/{y}.png"
+        ],
+        "foo": "foo value",
+        "bar": "bar value"
+    }"#;
+
+        let tilejson: TileJSON = serde_json::from_str(tilejson_str).unwrap();
+        let mut expected = tilejson! {
+            tilejson: "3.0.0".to_string(),
+            tiles: vec!["http://localhost:8888/foo/{z}/{x}/{y}.png".to_string()],
+            attribution: "".to_string(),
+            name: "compositing".to_string(),
+            scheme: "tms".to_string(),
+        };
+        expected.other.insert("foo".to_string(), "foo value".into());
+        expected.other.insert("bar".to_string(), "bar value".into());
+
+        assert_eq!(tilejson, expected);
+    }
+
+    #[test]
     fn test_writing() {
         let source = "http://localhost:8888/foo/{z}/{x}/{y}.png";
         let tj = tilejson! {
@@ -371,7 +399,7 @@ mod tests {
 
         let vl = VectorLayer::new(
             "a".to_string(),
-            HashMap::from([("b".to_string(), "c".to_string())]),
+            BTreeMap::from([("b".to_string(), "c".to_string())]),
         );
         let tj = tilejson! {
             source.to_string(),
