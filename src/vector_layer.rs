@@ -5,12 +5,12 @@ use serde_json::Value;
 
 /// Each object describes one layer of vector tile data.
 ///
-/// A vector_layer object MUST contain the id and fields keys, and MAY contain the description,
+/// A `vector_layer` object MUST contain the id and fields keys, and MAY contain the description,
 /// minzoom, or maxzoom keys. An implementation MAY include arbitrary keys in the object
 /// outside of those defined in this specification.
 ///
 /// *Note: When describing a set of raster tiles or other tile format that does not have
-/// a "layers" concept (i.e. "format": "jpeg"), the vector_layers key is not required.*
+/// a "layers" concept (i.e. "format": "jpeg"), the `vector_layers` key is not required.*
 ///
 /// These keys are used to describe the situation where different sets of vector layers
 /// appear in different zoom levels of the same set of tiles, for example in a case where
@@ -94,6 +94,7 @@ pub struct VectorLayer {
 }
 
 impl VectorLayer {
+    #[must_use]
     pub fn new(id: String, fields: BTreeMap<String, String>) -> Self {
         Self {
             id,
@@ -101,7 +102,7 @@ impl VectorLayer {
             description: None,
             maxzoom: None,
             minzoom: None,
-            other: Default::default(),
+            other: BTreeMap::default(),
         }
     }
 }

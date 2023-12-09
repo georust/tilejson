@@ -13,6 +13,7 @@ pub struct Center {
 }
 
 impl Center {
+    #[must_use]
     pub fn new(longitude: f64, latitude: f64, zoom: u8) -> Self {
         Self {
             longitude,
@@ -55,11 +56,49 @@ pub enum ParseCenterError {
     ParseZoomError(#[from] ParseIntError),
 }
 
+impl From<(f64, f64, u8)> for Center {
+    /// Parse a tuple as a Center value, same order as the [`Center::new`] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Center;
+    /// assert_eq!(
+    ///     Center::new(1.0, 2.0, 3),
+    ///     Center::from((1.0_f64, 2.0_f64, 3))
+    /// );
+    /// ```
+    fn from(value: (f64, f64, u8)) -> Self {
+        Self {
+            longitude: value.0,
+            latitude: value.1,
+            zoom: value.2,
+        }
+    }
+}
+
+impl From<(f32, f32, u8)> for Center {
+    /// Parse a tuple as a Center value, same order as the [`Center::new`] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Center;
+    /// assert_eq!(
+    ///     Center::new(1.0, 2.0, 3),
+    ///     Center::from((1.0_f32, 2.0_f32, 3))
+    /// );
+    /// ```
+    fn from(value: (f32, f32, u8)) -> Self {
+        Self {
+            longitude: f64::from(value.0),
+            latitude: f64::from(value.1),
+            zoom: value.2,
+        }
+    }
+}
+
 impl FromStr for Center {
     type Err = ParseCenterError;
 
     /// Parse a string of four comma-separated values as a Center value,
-    /// same order as the [Center::new] constructor. Extra spaces are ignored.
+    /// same order as the [`Center::new`] constructor. Extra spaces are ignored.
     ///
     /// # Example
     /// ```
@@ -68,7 +107,7 @@ impl FromStr for Center {
     /// let center = Center::from_str("1.0, 2.0, 3").unwrap();
     /// assert_eq!(center, Center::new(1.0, 2.0, 3));
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut vals = s.split(',').map(|s| s.trim());
+        let mut vals = s.split(',').map(str::trim);
         let mut next_val = || vals.next().ok_or(ParseCenterError::BadLen);
         let center = Self {
             longitude: next_val()?.parse()?,

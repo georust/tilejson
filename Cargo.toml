@@ -1,6 +1,6 @@
 [package]
 name = "tilejson"
-version = "0.4.0"
+version = "0.4.1"
 description = "Library for serializing the TileJSON file format"
 authors = [
     "Stepan Kuzmin <to.stepan.kuzmin@gmail.com>",
@@ -26,4 +26,4 @@ unsafe_code = "forbid"
 unused_qualifications = "warn"
 
 [lints.clippy]
-pedantic = "warn"
+pedantic = { level = "warn", priority = -1 }

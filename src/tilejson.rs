@@ -7,7 +7,7 @@ use crate::bounds::Bounds;
 use crate::center::Center;
 use crate::vector_layer::VectorLayer;
 
-/// TileJSON struct represents tilejson-spec metadata as specified by
+/// `TileJSON` struct represents tilejson-spec metadata as specified by
 /// <https://github.com/mapbox/tilejson-spec> (version 3.0.0)
 /// Some descriptions were copied verbatim from the spec per CC-BY 3.0 license.
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
@@ -218,7 +218,7 @@ impl TileJSON {
     }
 }
 
-/// Use this macro to create a TileJSON struct with optional values.
+/// Use this macro to create a `TileJSON` struct with optional values.
 /// The `tilejson!` macro can be used in several ways:
 ///
 /// ### With a single tile source
@@ -324,7 +324,7 @@ mod tests {
             tilejson! {
                 tilejson: "3.0.0".to_string(),
                 tiles: vec!["http://localhost:8888/foo/{z}/{x}/{y}.png".to_string()],
-                attribution: "".to_string(),
+                attribution: String::new(),
                 name: "compositing".to_string(),
                 scheme: "tms".to_string(),
             }
@@ -337,14 +337,14 @@ mod tests {
             tilejson! {
                 tilejson: "3.0.0".to_string(),
                 tiles: vec!["http://localhost:8888/foo/{z}/{x}/{y}.png".to_string()],
-                attribution: "".to_string(),
+                attribution: String::new(),
                 name: "compositing".to_string(),
                 scheme: "tms".to_string(),
                 bounds: Bounds::new(
                     -180.0,
-                    -85.05112877980659,
+                    -85.051_128_779_806_59,
                     180.0,
-                    85.0511287798066,
+                    85.051_128_779_806_6,
                 ),
                 maxzoom: 30,
                 minzoom: 0,
@@ -371,7 +371,7 @@ mod tests {
         let mut expected = tilejson! {
             tilejson: "3.0.0".to_string(),
             tiles: vec!["http://localhost:8888/foo/{z}/{x}/{y}.png".to_string()],
-            attribution: "".to_string(),
+            attribution: String::new(),
             name: "compositing".to_string(),
             scheme: "tms".to_string(),
         };

@@ -1,11 +1,11 @@
-//! # TileJSON
+//! # `TileJSON`
 //!
 //! `tilejson` is a crate for serializing/deserializing
 //! [TileJSON format](https://github.com/mapbox/tilejson-spec) —
 //! an open standard for representing map metadata.
 //!
-//! Use [tilejson!] macro to instantiate a valid [TileJSON].
-//! Use [TileJSON::set_missing_defaults] to populate default values per spec.
+//! Use [`tilejson!`] macro to instantiate a valid [`TileJSON`].
+//! Use [`TileJSON::set_missing_defaults`] to populate default values per spec.
 
 mod bounds;
 mod center;
