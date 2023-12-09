@@ -1,3 +1,9 @@
+<a name="v0.4.1"></a>
+### v0.4.1 (2022-12-08)
+* Add `Bounds::from` for `(f64, f64, f64, f64)` tuple. Same for `f32` and `i32`.
+* Add `Center::from` for `(f64, f64, u8)` and `(f32, f32, u8)` tuples.
+* A few clippy-related fixes
+
 <a name="v0.4.0"></a>
 ### v0.4.0 (2022-11-19)
 * Switch all `HashMap` to `BTreeMap` for consistent serialization ordering

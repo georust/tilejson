@@ -18,6 +18,7 @@ pub struct Bounds {
 
 impl Bounds {
     /// Create a new Bounds object.
+    #[must_use]
     pub fn new(left: f64, bottom: f64, right: f64, top: f64) -> Self {
         Self {
             left,
@@ -58,9 +59,9 @@ impl Bounds {
     pub const MAX_TILED: Self = {
         Self {
             left: -180.0,
-            bottom: -85.05112877980659,
+            bottom: -85.051_128_779_806_59,
             right: 180.0,
-            top: 85.0511287798066,
+            top: 85.051_128_779_806_6,
         }
     };
 }
@@ -150,16 +151,16 @@ impl AddAssign for Bounds {
     /// ```
     fn add_assign(&mut self, rhs: Self) {
         if self.left > rhs.left {
-            self.left = rhs.left
+            self.left = rhs.left;
         }
         if self.bottom > rhs.bottom {
-            self.bottom = rhs.bottom
+            self.bottom = rhs.bottom;
         }
         if self.right < rhs.right {
-            self.right = rhs.right
+            self.right = rhs.right;
         }
         if self.top < rhs.top {
-            self.top = rhs.top
+            self.top = rhs.top;
         }
     }
 }
@@ -174,7 +175,7 @@ pub enum ParseBoundsError {
 }
 
 impl From<[f64; 4]> for Bounds {
-    /// Parse four f64 values as a Bounds value, same order as the [Bounds::new] constructor.
+    /// Parse four f64 values as a Bounds value, same order as the [`Bounds::new`] constructor.
     ///
     /// ```
     /// # use tilejson::Bounds;
@@ -194,7 +195,7 @@ impl From<[f64; 4]> for Bounds {
 }
 
 impl From<[f32; 4]> for Bounds {
-    /// Parse four f32 values as a Bounds value, same order as the [Bounds::new] constructor.
+    /// Parse four f32 values as a Bounds value, same order as the [`Bounds::new`] constructor.
     ///
     /// ```
     /// # use tilejson::Bounds;
@@ -205,16 +206,16 @@ impl From<[f32; 4]> for Bounds {
     /// ```
     fn from(value: [f32; 4]) -> Self {
         Self {
-            left: value[0] as f64,
-            bottom: value[1] as f64,
-            right: value[2] as f64,
-            top: value[3] as f64,
+            left: f64::from(value[0]),
+            bottom: f64::from(value[1]),
+            right: f64::from(value[2]),
+            top: f64::from(value[3]),
         }
     }
 }
 
 impl From<[i32; 4]> for Bounds {
-    /// Parse four i32 values as a Bounds value, same order as the [Bounds::new] constructor.
+    /// Parse four i32 values as a Bounds value, same order as the [`Bounds::new`] constructor.
     ///
     /// ```
     /// # use tilejson::Bounds;
@@ -225,10 +226,70 @@ impl From<[i32; 4]> for Bounds {
     /// ```
     fn from(value: [i32; 4]) -> Self {
         Self {
-            left: value[0] as f64,
-            bottom: value[1] as f64,
-            right: value[2] as f64,
-            top: value[3] as f64,
+            left: f64::from(value[0]),
+            bottom: f64::from(value[1]),
+            right: f64::from(value[2]),
+            top: f64::from(value[3]),
+        }
+    }
+}
+
+impl From<(f64, f64, f64, f64)> for Bounds {
+    /// Parse a tuple with four f64 values as a Bounds value, same order as the [`Bounds::new`] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::new(1., 2., 3., 4.),
+    ///     Bounds::from((1., 2., 3., 4.))
+    /// );
+    /// ```
+    fn from(value: (f64, f64, f64, f64)) -> Self {
+        Self {
+            left: value.0,
+            bottom: value.1,
+            right: value.2,
+            top: value.3,
+        }
+    }
+}
+
+impl From<(f32, f32, f32, f32)> for Bounds {
+    /// Parse a tuple with four f32 values as a Bounds value, same order as the [`Bounds::new`] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::new(1., 2., 3., 4.),
+    ///     Bounds::from((1.0f32, 2.0f32, 3.0f32, 4.0f32))
+    /// );
+    /// ```
+    fn from(value: (f32, f32, f32, f32)) -> Self {
+        Self {
+            left: f64::from(value.0),
+            bottom: f64::from(value.1),
+            right: f64::from(value.2),
+            top: f64::from(value.3),
+        }
+    }
+}
+
+impl From<(i32, i32, i32, i32)> for Bounds {
+    /// Parse a tuple with four i32 values as a Bounds value, same order as the [`Bounds::new`] constructor.
+    ///
+    /// ```
+    /// # use tilejson::Bounds;
+    /// assert_eq!(
+    ///     Bounds::new(1., 2., 3., 4.),
+    ///     Bounds::from((1, 2, 3, 4))
+    /// );
+    /// ```
+    fn from(value: (i32, i32, i32, i32)) -> Self {
+        Self {
+            left: f64::from(value.0),
+            bottom: f64::from(value.1),
+            right: f64::from(value.2),
+            top: f64::from(value.3),
         }
     }
 }
@@ -236,7 +297,7 @@ impl From<[i32; 4]> for Bounds {
 impl TryFrom<Vec<f64>> for Bounds {
     type Error = ParseBoundsError;
 
-    /// Parse four f64 values as a Bounds value, same order as the [Bounds::new] constructor.
+    /// Parse four f64 values as a Bounds value, same order as the [`Bounds::new`] constructor.
     ///
     /// ```
     /// # use tilejson::Bounds;
@@ -254,7 +315,7 @@ impl TryFrom<Vec<f64>> for Bounds {
 impl TryFrom<&[f64]> for Bounds {
     type Error = ParseBoundsError;
 
-    /// Parse four f64 values as a Bounds value, same order as the [Bounds::new] constructor.
+    /// Parse four f64 values as a Bounds value, same order as the [`Bounds::new`] constructor.
     ///
     /// ```
     /// # use tilejson::Bounds;
@@ -272,7 +333,7 @@ impl TryFrom<&[f64]> for Bounds {
 impl TryFrom<&[f32]> for Bounds {
     type Error = ParseBoundsError;
 
-    /// Parse four f32 values as a Bounds value, same order as the [Bounds::new] constructor.
+    /// Parse four f32 values as a Bounds value, same order as the [`Bounds::new`] constructor.
     ///
     /// ```
     /// # use tilejson::Bounds;
@@ -290,7 +351,7 @@ impl TryFrom<&[f32]> for Bounds {
 impl TryFrom<&[i32]> for Bounds {
     type Error = ParseBoundsError;
 
-    /// Parse four i32 values as a Bounds value, same order as the [Bounds::new] constructor.
+    /// Parse four i32 values as a Bounds value, same order as the [`Bounds::new`] constructor.
     ///
     /// ```
     /// # use tilejson::Bounds;
@@ -309,7 +370,7 @@ impl FromStr for Bounds {
     type Err = ParseBoundsError;
 
     /// Parse a string of four comma-separated values as a Bounds value,
-    /// same order as the [Bounds::new] constructor. Extra spaces are ignored.
+    /// same order as the [`Bounds::new`] constructor. Extra spaces are ignored.
     ///
     /// # Example
     /// ```
