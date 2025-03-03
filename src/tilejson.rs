@@ -13,7 +13,7 @@ use crate::vector_layer::VectorLayer;
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct TileJSON {
     /// A semver.org style version number as a string.
-    /// Describes the version of the TileJSON spec that is implemented by this JSON object.
+    /// Describes the version of the `TileJSON` spec that is implemented by this JSON object.
     /// Example: `"3.0.0"`
     /// See <https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#31-tilejson>
     pub tilejson: String,
@@ -31,12 +31,12 @@ pub struct TileJSON {
 
     /// An array of objects. Each object describes one layer of vector tile data.
     ///
-    /// A vector_layer object MUST contain the id and fields keys, and MAY contain the description,
+    /// A `vector_layer` object MUST contain the id and fields keys, and MAY contain the description,
     /// minzoom, or maxzoom keys. An implementation MAY include arbitrary keys in the object
     /// outside of those defined in this specification.
     ///
     /// *Note: When describing a set of raster tiles or other tile format that does not have
-    /// a "layers" concept (i.e. "format": "jpeg"), the vector_layers key is not required.*
+    /// a "layers" concept (i.e. "format": "jpeg"), the `vector_layers` key is not required.*
     ///
     /// See <https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#33-vector_layers>
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -82,20 +82,20 @@ pub struct TileJSON {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub center: Option<Center>,
 
-    /// An array of data files in GeoJSON format.
+    /// An array of data files in `GeoJSON` format.
     ///
     /// {z}, {x} and {y}, if present, are replaced with the corresponding integers.
     /// If multiple endpoints are specified, clients may use any combination of endpoints.
     /// All endpoints MUST return the same content for the same URL. If the array doesn't
     /// contain any entries, then no data is present in the map. This field is for overlaying
-    /// GeoJSON data on tiled raster maps and is generally no longer used for GL-based maps.
+    /// `GeoJSON` data on tiled raster maps and is generally no longer used for GL-based maps.
     /// See <https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#37-data>
     #[serde(skip_serializing_if = "Option::is_none")]
     pub data: Option<Vec<String>>,
 
     /// A text description of the set of tiles.
     ///
-    /// The description can contain any valid unicode character as described by the JSON specification RFC 8259.
+    /// The description can contain any valid Unicode character as described by the JSON specification RFC 8259.
     /// See <https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#38-description>
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -109,10 +109,10 @@ pub struct TileJSON {
     ///
     /// For example, in a set of tiles with maxzoom 10 and no fillzoom specified,
     /// a request for a z11 tile will use the z10 parent tiles to generate the new,
-    /// overzoomed z11 tile. If the same TileJSON object had fillzoom specified at z7,
+    /// overzoomed z11 tile. If the same `TileJSON` object had fillzoom specified at z7,
     /// a request for a z11 tile would use the z7 tile instead of z10.
     ///
-    /// While TileJSON may specify rules for overzooming tiles, it is ultimately up to the tile
+    /// While `TileJSON` may specify rules for overzooming tiles, it is ultimately up to the tile
     /// serving client or renderer to implement overzooming.
     ///
     /// OPTIONAL. Integer. Default: null.
@@ -129,7 +129,7 @@ pub struct TileJSON {
     /// See <https://github.com/mapbox/utfgrid-spec/tree/master/1.2> for the interactivity specification.
     ///
     /// *Note: UTF-Grid interactivity predates GL-based map rendering and interaction.
-    /// Map interactivity is now generally defined outside of the TileJSON specification
+    /// Map interactivity is now generally defined outside the `TileJSON` specification
     /// and is dependent on the tile rendering library's features.*
     ///
     /// See <https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#310-grids>
@@ -148,8 +148,8 @@ pub struct TileJSON {
     /// An integer specifying the maximum zoom level.
     ///
     /// MUST be in range: 0 <= minzoom <= maxzoom <= 30.
-    /// A client or server MAY request tiles outside of the zoom range,
-    /// but the availability of these tiles is dependent on how the the tile server
+    /// A client or server MAY request tiles outside the zoom range,
+    /// but the availability of these tiles is dependent on how the tile server
     /// or renderer handles the request (such as overzooming tiles).
     /// OPTIONAL. Integer. Default: 30.
     /// See <https://github.com/mapbox/tilejson-spec/tree/master/3.0.0#312-maxzoom>
