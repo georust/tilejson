@@ -1,3 +1,7 @@
+<a name="v0.4.2"></a>
+### v0.4.2 (2025-03-03)
+* Update dependencies, set MSRV to 1.78, and some internal cleanup
+
 <a name="v0.4.1"></a>
 ### v0.4.1 (2022-12-08)
 * Add `Bounds::from` for `(f64, f64, f64, f64)` tuple. Same for `f32` and `i32`.
