@@ -28,7 +28,7 @@ fn main() {
     // Parse JSON
     let mut tilejson: TileJSON = serde_json::from_str(&tilejson_str).unwrap();
     println!("{tilejson:?}");
-   
+
     // Add missing default values per TileJSON specification
     tilejson.set_missing_defaults();
     println!("{tilejson:?}");
