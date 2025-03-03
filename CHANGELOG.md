@@ -29,7 +29,7 @@
 ### v0.3.1 (2022-05-29)
 * Add `Bounds::MAX` to create a maximum -180..180, -90..90 value.
 * Add `Bounds::MAX_TILED` to create a maximum allowed for vector tiles per spec.
-* Implement `Add` and `AddAssign` on `Bounds` 
+* Implement `Add` and `AddAssign` on `Bounds`
 
 <a name="v0.3.0"></a>
 ### v0.3.0 (2022-05-25)
@@ -56,7 +56,6 @@
 #### Bug Fixes
 
 *   use String instead of &'static str for `tilejson` field (#7) ([25b325c9](https://github.com/georust/tilejson/commit/25b325c9f0618f1cad16899385f87339ac366e20))
-
 
 
 <a name="v0.2.3"></a>
