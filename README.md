@@ -5,6 +5,7 @@
 [![docs.rs docs](https://docs.rs/tilejson/badge.svg)](https://docs.rs/tilejson)
 [![license](https://img.shields.io/crates/l/tilejson.svg)](https://github.com/georust/tilejson/blob/main/LICENSE-APACHE)
 [![CI build](https://github.com/georust/tilejson/actions/workflows/ci.yml/badge.svg)](https://github.com/georust/tilejson/actions)
+[![Codecov](https://img.shields.io/codecov/c/github/georust/tilejson)](https://app.codecov.io/gh/georust/tilejson)
 
 `tilejson` is a crate for serializing/deserializing the [TileJSON](https://github.com/mapbox/tilejson-spec) format — an open standard for representing map metadata.
 

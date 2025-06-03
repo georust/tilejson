@@ -23,14 +23,12 @@ check:
     cargo check --workspace --all-targets {{features_flag}}
 
 # Verify that the current version of the crate is not the same as the one published on crates.io
-check-if-published:  (assert-cmd 'jq')
+check-if-published package=main_crate:  (assert-cmd 'jq')
     #!/usr/bin/env bash
     set -euo pipefail
-    LOCAL_VERSION="$({{just_executable()}} get-crate-field version)"
-    echo "Detected crate version:  '$LOCAL_VERSION'"
-    CRATE_NAME="$({{just_executable()}} get-crate-field name)"
-    echo "Detected crate name:     '$CRATE_NAME'"
-    PUBLISHED_VERSION="$(cargo search ${CRATE_NAME} | grep "^${CRATE_NAME} =" | sed -E 's/.* = "(.*)".*/\1/')"
+    LOCAL_VERSION="$({{just_executable()}} get-crate-field version package)"
+    echo "Detected crate {{package}} version:  '$LOCAL_VERSION'"
+    PUBLISHED_VERSION="$(cargo search --quiet {{package}} | grep "^{{package}} =" | sed -E 's/.* = "(.*)".*/\1/')"
     echo "Published crate version: '$PUBLISHED_VERSION'"
     if [ "$LOCAL_VERSION" = "$PUBLISHED_VERSION" ]; then
         echo "ERROR: The current crate version has already been published."
@@ -65,8 +63,8 @@ coverage *args='--no-clean --open':  (cargo-install 'cargo-llvm-cov')
     cargo llvm-cov --workspace --all-targets {{features_flag}} --include-build-script {{args}}
 
 # Build and open code documentation
-docs:
-    cargo doc --no-deps --open
+docs *args='--open':
+    DOCS_RS=1 cargo doc --no-deps {{args}} --workspace {{features_flag}}
 
 # Print environment info
 env-info:
@@ -108,11 +106,10 @@ semver *args:  (cargo-install 'cargo-semver-checks')
 # Run all unit and integration tests
 test:
     cargo test --workspace --all-targets {{features_flag}}
-
-# Test documentation
-test-doc:
     cargo test --doc {{features_flag}}
-    cargo doc {{features_flag}} --no-deps
+
+# Test documentation generation
+test-doc: (docs '')
 
 # Test code formatting
 test-fmt:
