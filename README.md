@@ -2,6 +2,7 @@
 
 [![GitHub repo](https://img.shields.io/badge/github-tilejson-8da0cb?logo=github)](https://github.com/georust/tilejson)
 [![crates.io version](https://img.shields.io/crates/v/tilejson)](https://crates.io/crates/tilejson)
+[![crate usage](https://img.shields.io/crates/d/tilejson)](https://crates.io/crates/tilejson)
 [![docs.rs status](https://img.shields.io/docsrs/tilejson)](https://docs.rs/tilejson)
 [![crates.io license](https://img.shields.io/crates/l/tilejson.svg)](https://github.com/georust/tilejson/blob/main/LICENSE-APACHE)
 [![CI build status](https://github.com/georust/tilejson/actions/workflows/ci.yml/badge.svg)](https://github.com/georust/tilejson/actions)
