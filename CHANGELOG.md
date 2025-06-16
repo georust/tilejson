@@ -1,3 +1,15 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.4.3](https://github.com/georust/tilejson/compare/v0.4.2...v0.4.3) - 2025-06-16
+- migrate to release-plz CI and rework CI/dependabot pipeline ([#43](https://github.com/georust/tilejson/pull/43), [#36](https://github.com/georust/tilejson/pull/36), [#35](https://github.com/georust/tilejson/pull/35), [#33](https://github.com/georust/tilejson/pull/33), [#32](https://github.com/georust/tilejson/pull/32), [#31](https://github.com/georust/tilejson/pull/31), [#30](https://github.com/georust/tilejson/pull/30))
+
 <a name="v0.4.2"></a>
 ### v0.4.2 (2025-03-03)
 * Update dependencies, set MSRV to 1.78, and some internal cleanup
