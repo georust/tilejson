@@ -427,6 +427,7 @@ mod tests {
     }
 
     #[test]
+    #[expect(clippy::panic_in_result_fn)]
     fn test_from() -> Result<(), ParseBoundsError> {
         let exp = Bounds::new(1.0, 2.0, 3.0, 4.0);
         assert_eq!(exp, Bounds::from([1.0, 2.0, 3.0, 4.0]));
