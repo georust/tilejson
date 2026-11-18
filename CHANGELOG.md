@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.5](https://github.com/georust/tilejson/compare/v0.4.4...v0.4.5) - 2026-11-18
+
+### Other
+
+- use the built-in GITHUB_TOKEN instead of RELEASE_PLZ_TOKEN
+- minor cleanup ([#51](https://github.com/georust/tilejson/pull/51))
+- [pre-commit.ci] pre-commit autoupdate ([#50](https://github.com/georust/tilejson/pull/50))
+- deny leaks, let fmt indent .rs files ([#48](https://github.com/georust/tilejson/pull/48))
+- use Rust 1.97 cargo warnings ([#47](https://github.com/georust/tilejson/pull/47))
+
 ## [0.4.4](https://github.com/georust/tilejson/compare/v0.4.3...v0.4.4) - 2025-12-01
 
 ### Other
