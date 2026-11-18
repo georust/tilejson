@@ -140,8 +140,8 @@ udeps:  (cargo-install 'cargo-udeps')
     cargo +nightly udeps --workspace --all-features --all-targets
 
 # Update all dependencies, including breaking changes. Requires nightly toolchain (install with `rustup install nightly`)
-update:
-    cargo +nightly -Z unstable-options update --breaking
+update:  (cargo-install 'cargo-upgrade' 'cargo-edit')
+    cargo upgrade --incompatible --compatible ignore
     cargo update
 
 # Ensure that a certain command is available
@@ -177,7 +177,7 @@ cargo-install $COMMAND $INSTALL_CMD='' *args='':
             { set +x; } 2>/dev/null
         else
             set -x
-            cargo binstall ${INSTALL_CMD:-$COMMAND} {{binstall_args}} --locked {{args}}
+            cargo binstall ${INSTALL_CMD:-$COMMAND} {{binstall_args}} --locked
             { set +x; } 2>/dev/null
         fi
     fi
