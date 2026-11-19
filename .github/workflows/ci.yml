@@ -19,6 +19,7 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
       - if: github.event_name != 'release' && github.event_name != 'workflow_dispatch'
@@ -30,6 +31,7 @@ jobs:
   test-msrv:
     name: Test MSRV
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
       - if: github.event_name != 'release' && github.event_name != 'workflow_dispatch'
@@ -52,6 +54,7 @@ jobs:
     name: Code Coverage
     if: github.event_name != 'release'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
       - uses: Swatinem/rust-cache@v2
@@ -70,6 +73,7 @@ jobs:
     needs: [ test, test-msrv ]
     if: always()
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Result of the needed steps
         run: echo "${{ toJSON(needs) }}"
@@ -86,6 +90,7 @@ jobs:
       && github.ref == 'refs/heads/main'
       && github.repository_owner == 'georust'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
       id-token: write
